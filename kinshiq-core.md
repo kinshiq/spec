@@ -1,4 +1,4 @@
-# Kinshiq Core Specification v0.6.4
+# Kinshiq Core Specification v0.6.5-dev
 
 *MRCA-based encoding of biological pedigree relationships*
 
