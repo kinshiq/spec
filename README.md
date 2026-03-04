@@ -16,7 +16,9 @@ Editor’s draft:
 
 The `main` branch represents the current editor’s draft.
 
-Stable versions of the specification are published as Git tags and GitHub Releases.
+Stable versions of the specification are published as tagged releases:
+
+https://github.com/kinshiq/spec/releases
 
 ## Documentation
 
