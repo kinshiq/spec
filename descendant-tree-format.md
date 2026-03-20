@@ -183,7 +183,7 @@ Johanna Persdotter 1848-12-05
     Karl Alfred Persson (Lindberg) 1871-03-02 d.1957-03-31
         ~Anna Maria Forsberg 1872-02-24
         Gustav Hilmer [Hjalmar] Lindberg 1908-10-16 d.1951-04-03
-            ~Frida Kristina f. Jansson 1911-07-31
+            ~Frida Kristina Jansson 1911-07-31
             Karl Åke Lindberg 1942-02-22
             Anna Margareta Lindberg 1947-03-25
     Emma Charlotta Persson 1874-11-18
