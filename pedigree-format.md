@@ -34,14 +34,24 @@ The format is designed to be:
 
 Unlike indentation-only pedigree formats, this version uses an explicit pedigree index. Indentation and visual ordering are presentation only.
 
-This format models pedigree position and line structure only. It does not define canonical identity, merge behavior, or relationship qodes.
+This format models pedigree position and line structure only. It does not define canonical identity, merge behavior, or relationship codes.
 
 ---
 
-## 2. Structure
+## 2. Terminology
+
+- The **root entry** is the single pedigree entry with no pedigree index.
+- A **non-root entry** is any pedigree entry with a pedigree index.
+- A **placeholder entry** is a non-root entry that contains an index but omits names.
+- The **pedigree index** is the authoritative ancestry-position token on a non-root line.
+
+---
+
+## 3. Structure
 
 - The file MUST represent an indexed pedigree tree.
 - Each non-empty line MUST describe exactly one pedigree entry.
+- The file MUST contain exactly one root entry.
 - The root person MUST NOT have a pedigree index.
 - Every non-root person MUST have a pedigree index.
 - The pedigree index defines ancestry position.
@@ -52,7 +62,7 @@ Blank lines MAY appear and MUST be ignored by parsers.
 
 ---
 
-## 3. Pedigree Index
+## 4. Pedigree Index
 
 - The pedigree index appears immediately after any indentation and before any remaining fields on the line.
 - The pedigree index is a lowercase string of one or more `f` and `m` characters.
@@ -68,14 +78,14 @@ Examples:
 - `fm` = father's mother
 - `mff` = mother's father's father
 
-### 3.1 Syntax
+### 4.1 Syntax
 
 - The index token MUST match `^[fm]+$`.
 - If additional fields follow the index token, the index token MUST be followed by at least one whitespace character.
 - After indentation, if the first token matches `^[fm]+$`, parsers MUST interpret it as a pedigree index rather than as part of the name.
 - Bare leading tokens such as `f`, `m`, `ff`, and `ffmm` are therefore reserved in index position.
 
-### 3.2 Semantics
+### 4.2 Semantics
 
 - The length of the index equals generation depth.
 - The index is authoritative.
@@ -85,7 +95,7 @@ Examples:
 
 ---
 
-## 4. Presentation
+## 5. Presentation
 
 - Indentation is optional and is used only for readability.
 - If indentation is used, one indentation level is exactly one tab character (`\t`) or four consecutive spaces.
@@ -96,7 +106,7 @@ Examples:
 
 ---
 
-## 5. Ordering
+## 6. Ordering
 
 - Line order does not define pedigree structure.
 - Writers SHOULD emit entries in ascending pedigree order.
@@ -107,7 +117,7 @@ Examples:
 
 ---
 
-## 6. Line Syntax
+## 7. Line Syntax
 
 On non-root lines:
 
@@ -117,7 +127,7 @@ On non-root lines:
 
 - On non-root lines, all fields after the index are optional.
 - A non-root line containing only the index is a valid placeholder entry.
-- A placeholder entry MAY also contain a comment and/or metadata without a name.
+- A placeholder entry MAY also contain a comment, dates, and/or URLs without a name.
 
 On the root line:
 
@@ -128,9 +138,17 @@ On the root line:
 - The root line omits the pedigree index.
 - The root line MUST contain at least one name token.
 
+### 7.1 Root Recognition
+
+- A parser MUST recognize at most one root entry.
+- A line whose first non-indentation token matches `^[fm]+$` MUST be interpreted as a non-root entry.
+- A line whose first non-indentation token does not match `^[fm]+$` MUST be interpreted as a root candidate.
+- A valid file MUST contain exactly one root candidate.
+- If more than one root candidate appears in a file, the file MUST be rejected as invalid unless an implementation explicitly defines a multi-root extension.
+
 ---
 
-## 7. Field Separation
+## 8. Field Separation
 
 - Fields on a line MUST be separated by one or more whitespace characters.
 - Whitespace includes:
@@ -138,7 +156,7 @@ On the root line:
   - tab
 - Parsers MUST treat any sequence of one or more whitespace characters as a single separator between fields.
 
-### 7.1 Constraints
+### 8.1 Constraints
 
 - Leading whitespace MUST be interpreted as indentation first.
 - After indentation has been interpreted, remaining whitespace MUST be treated as field separators.
@@ -147,7 +165,17 @@ On the root line:
 
 ---
 
-## 8. Names
+## 9. Placeholder Entries
+
+- A placeholder entry MUST contain a pedigree index.
+- A placeholder entry MAY omit names entirely.
+- A placeholder entry MAY include comment and URL fields without a name.
+- A placeholder entry MAY include dates without a name, but writers SHOULD avoid such usage unless the dates are intentionally attached to an unidentified ancestor slot.
+- A placeholder entry MUST NOT be used for the root entry.
+
+---
+
+## 10. Names
 
 - Name tokens are optional on non-root lines.
 - The root line always has at least one name token.
@@ -165,7 +193,7 @@ Examples:
 
 ---
 
-## 9. Dates
+## 11. Dates
 
 - Birth date has no prefix.
 - Death date is prefixed with `d.`
@@ -185,21 +213,22 @@ Parsers MUST reject date tokens outside the allowed forms.
 
 ---
 
-## 10. Validation Rules
+## 12. Validation Rules
 
 - The root person MUST NOT have a pedigree index.
 - Every non-root person MUST have a pedigree index.
+- A valid file MUST contain exactly one root entry.
 - The pedigree index MUST use only lowercase `f` and `m`.
 - Root lines MUST contain at least one name token.
 - Non-root lines MAY omit the name entirely.
-- Duplicate pedigree indexes SHOULD be treated as invalid unless an implementation explicitly defines overwrite or merge behavior.
+- Duplicate pedigree indexes MUST be rejected.
 - No more than one pedigree entry MAY appear on a line.
 - Unquoted comment text is invalid.
 - Dates MUST use allowed formats.
 
 ---
 
-## 11. Example
+## 13. Example
 
 ```text
 Root Dudeson 1947-06-18 "Stora Tuna, Dalarna, Sverige"
@@ -217,7 +246,7 @@ This example is illustrative.
 
 ---
 
-## 12. Scope and Non-Goals
+## 14. Scope and Non-Goals
 
 This specification defines:
 
@@ -231,12 +260,12 @@ This specification does not define:
 
 - person identifiers,
 - merge behavior,
-- relationship qodes,
+- relationship codes,
 - snapshot semantics,
 - generalized family graphs.
 
 ---
 
-## 13. Versioning Note
+## 15. Versioning Note
 
 `v0.3-dev` introduces the indexed pedigree model as the current Kinshiq draft publication shape. It corresponds conceptually to the latest indexed pedigree draft previously maintained in KinLab.

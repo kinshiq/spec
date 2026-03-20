@@ -38,10 +38,20 @@ This format models presentation and descendant structure only. It does not defin
 
 ---
 
-## 2. Structure
+## 2. Terminology
+
+- A **descendant entry** is a non-partner line describing a person in the descendant tree.
+- A **partner entry** is a line beginning with `~`.
+- The **root entry** is a descendant entry at depth 0.
+- A **depth** is the number of indentation levels on a line after indentation normalization.
+
+---
+
+## 3. Structure
 
 - The file MUST represent a descendant tree.
 - Each non-empty line MUST describe exactly one entry.
+- The file MUST contain exactly one root entry.
 - Indentation MUST represent generation depth.
 - A line beginning with `~` MUST be interpreted as a partner entry rather than a direct descendant line.
 - Children listed after a partner line at the next deeper generation belong to that descendant-partner pair.
@@ -51,19 +61,19 @@ Blank lines MAY appear and MUST be ignored by parsers.
 
 ---
 
-## 3. Indentation
+## 4. Indentation
 
-### 3.1 Indentation Units
+### 4.1 Indentation Units
 
 - One indentation level is exactly one tab character (`\t`) or four consecutive spaces.
 - Tabs and four-space groups MAY be mixed within the same file.
 
-### 3.2 Normalization
+### 4.2 Normalization
 
 - Parsers MUST treat one tab and four spaces as equivalent to one indentation level.
 - Parsers MUST interpret indentation in units of indentation levels, not raw characters.
 
-### 3.3 Validation
+### 4.3 Validation
 
 - Spaces used for indentation MUST appear in groups of exactly four.
 - Any number of tabs and/or four-space groups MAY be combined to form indentation.
@@ -71,7 +81,7 @@ Blank lines MAY appear and MUST be ignored by parsers.
 
 ---
 
-## 4. Line Syntax
+## 5. Line Syntax
 
 Each non-empty line has the form:
 
@@ -85,7 +95,7 @@ Each non-empty line has the form:
 
 ---
 
-## 5. Field Separation
+## 6. Field Separation
 
 - Fields on a line MUST be separated by one or more whitespace characters.
 - Whitespace includes:
@@ -102,9 +112,22 @@ Each non-empty line has the form:
 
 ---
 
-## 6. Names
+## 7. Structure Semantics
 
-- Every non-empty non-placeholder line MUST contain at least one name token.
+- The root entry MUST be a descendant entry.
+- A partner entry MUST NOT appear at depth 0.
+- A partner entry MUST attach to the nearest preceding descendant entry at the immediately shallower depth.
+- A partner entry MUST NOT itself create a new structural parent context for later sibling or child resolution.
+- A descendant entry at depth `n + 1` following a partner entry at depth `n` is a child of the owning descendant-partner pair.
+- A descendant entry at depth `n + 1` with no active partner entry at depth `n` is a child of the nearest preceding descendant entry at depth `n`.
+- A parser MUST reject entries that require jumping more than one depth level deeper than the currently established structural context.
+- A valid file MUST contain exactly one descendant entry at depth 0.
+
+---
+
+## 8. Names
+
+- Every non-empty line MUST contain at least one name token.
 - If there is only one plain name token, it is a given name.
 - If there are multiple plain name tokens, the last plain name token is the birth surname.
 - `()` encloses surnames that are not birth surnames, for example married or taken names.
@@ -119,7 +142,7 @@ Examples:
 
 ---
 
-## 7. Dates
+## 9. Dates
 
 - Birth date has no prefix.
 - Death date is prefixed with `d.`
@@ -139,19 +162,20 @@ Parsers MUST reject date tokens outside the allowed forms.
 
 ---
 
-## 8. Validation Rules
+## 10. Validation Rules
 
 - No more than one entry MAY appear on a line.
 - Unquoted free comment text is invalid.
 - Dates MUST use the allowed formats.
-- A partner line at the root level SHOULD be rejected as invalid descendant-tree structure.
+- A partner line at the root level MUST be rejected.
+- A partner line with no preceding descendant entry at the immediately shallower depth MUST be rejected.
 - A parser MUST reject indentation that cannot be resolved into whole indentation levels.
 
 This specification does not require parsers to infer missing structural context beyond the rules above.
 
 ---
 
-## 9. Example
+## 11. Example
 
 ```text
 Johanna Ersdotter 1848-12-05
@@ -168,7 +192,7 @@ This example is illustrative.
 
 ---
 
-## 10. Scope and Non-Goals
+## 12. Scope and Non-Goals
 
 This specification defines:
 
@@ -188,6 +212,6 @@ This specification does not define:
 
 ---
 
-## 11. Versioning Note
+## 13. Versioning Note
 
 `v0.3-dev` introduces the current draft naming and publication shape for Kinshiq. It corresponds conceptually to the latest draft previously maintained in KinLab, while normalizing the name to **Descendant Tree Format**.
