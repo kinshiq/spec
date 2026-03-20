@@ -108,6 +108,8 @@ Each non-empty line has the form:
 - Leading whitespace MUST be interpreted as indentation first.
 - After indentation has been interpreted, any remaining spaces or tabs MUST be treated as field separators.
 - Quoted comments (`"..."`) MUST be treated as a single field.
+- Inside a quoted comment, a literal `"` MUST be written as `\"`.
+- Inside a quoted comment, a literal `\` MUST be written as `\\`.
 - URLs MUST appear last on a line.
 
 ---
@@ -130,15 +132,22 @@ Each non-empty line has the form:
 - Every non-empty line MUST contain at least one name token.
 - If there is only one plain name token, it is a given name.
 - If there are multiple plain name tokens, the last plain name token is the birth surname.
+- The emitted birth surname MUST be encoded as exactly one token.
+- If a source birth surname contains spaces, writers MUST encode those spaces so that the emitted birth surname remains one token.
 - `()` encloses surnames that are not birth surnames, for example married or taken names.
 - `[]` encloses alternative spellings, nicknames, or other non-canonical variants.
 - `_` inside a name token represents a literal space.
 - Parsers MUST interpret `_` inside name tokens as a literal space.
+- The characters `~`, `(`, `)`, `[`, `]`, `_`, and `\` are reserved within name tokens.
+- A writer MUST escape a literal reserved character inside a name token with backslash syntax.
+- Parsers MUST interpret `\~`, `\(`, `\)`, `\[`, `\]`, `\_`, and `\\` as literal characters inside the token.
 
 Examples:
 
 - `af_Silversköld`
 - `de_la_Cruz`
+- `Svensson_Berg`
+- `Berg\_ström`
 
 ---
 
