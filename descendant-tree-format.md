@@ -187,6 +187,10 @@ Johanna Persdotter 1848-12-05
             Karl Åke Lindberg 1942-02-22
             Anna Margareta Lindberg 1947-03-25
     Emma Charlotta Persson 1874-11-18
+        ~Johan Emil Svensson 1870-04-09
+        Nils Verner Svensson 1898-06-14
+        ~August Teodor Berglund 1876-01-27
+        Elin Maria Berglund 1903-09-02
 ```
 
 This example is illustrative.
