@@ -231,11 +231,11 @@ Parsers MUST reject date tokens outside the allowed forms.
 ## 13. Example
 
 ```text
-Root Dudeson 1947-06-18 "Stora Tuna, Dalarna, Sverige"
-    f Dude Dudeson 1917-12-15 d.1985-11-11 "Norr Amsberg, Dalarna, Sverige"
-        ff Johan Dudeson 1893 d.1949
-            fff Anders Dudeson 1872 d.1913
-        fm Märta Dudeson 1884-01-08 d.1927-07-02 "Stora Tuna, Dalarna, Sverige"
+Karl Erik Andersson 1947-06-18 "Stora Tuna, Dalarna, Sverige"
+    f Erik Gunnar Andersson 1917-12-15 d.1985-11-11 "Norr Amsberg, Dalarna, Sverige"
+        ff Johan August Andersson 1893 d.1949
+            fff Anders Olof Andersson 1872 d.1913
+        fm Märta Kristina Larsson 1884-01-08 d.1927-07-02 "Stora Tuna, Dalarna, Sverige"
     m Dagmar Anna Märta Jansson 1923-02-26 "Aspeboda, Dalarna, Sverige"
         mf Albert Teodor Jansson 1891 d.1984
         mm
